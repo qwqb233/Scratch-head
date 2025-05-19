@@ -8,39 +8,62 @@
 #ifndef __BUTTON_H__
 #define __BUTTON_H__
 
-#define BUTTON_NUM 2
+#define GPIO_PORT_TYPE GPIO_TypeDef*
+#define GPIO_PIN_TYPE uint16_t
+#define BUTTON_FIFO_SIZE 10
 
 typedef enum
 {
-    start_button_none = 0,
+    button_none = 0,
+
     start_button_pressed,
+    start_button_long_pressed,
     start_button_released,
-    start_button_hold,
 
-    test_button_pressed,
-    test_button_released,
-    test_button_hold
-    
-}button_state_t;
+    select_button_pressed,
+    select_button_long_pressed,
+    select_button_released,
 
-typedef struct button
+    button_max,
+} button_t;
+
+typedef struct button_struct
 {
-    GPIO_TypeDef *port;
-    uint16_t pin;
-    button_state_t state;
+    GPIO_PORT_TYPE port;
+    GPIO_PIN_TYPE pin;
+
+    uint8_t active_level;
+
+    uint8_t state;
+    uint8_t last_state;
+
     uint32_t hold_time;
-}button_t;
+    uint32_t count_hold_time;
+    uint32_t filter_time;
+    uint32_t count_filter_time;
+    uint32_t repeat_time;
+    uint32_t count_repeat_time;
+}button_struct_t;
 
 typedef struct button_fifo
 {
-    button_state_t buffer[20];
-    button_state_t *read;
-    button_state_t *write;
+    uint8_t fifo[BUTTON_FIFO_SIZE];
+    uint8_t * read;
+    uint8_t * write;
 }button_fifo_t;
 
-void button_struct_init(button_t *button);
+#define BUTTON_COUNT (uint8_t)((button_max-1)/3)
+
+
+button_struct_t button_list[BUTTON_COUNT];
+button_fifo_t button_fifo;
 
 void button_init(void);
 void button_scan(void);
+
+//放置在滴答定时器或一毫秒定时器中
+void button_scan_1ms(void);
+void button_scan_10ms(void);
+
 
 #endif
