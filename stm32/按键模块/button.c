@@ -22,3 +22,10 @@ void button_init(void)
     // button.pin = BUTTON_PIN;
     // button.port = BUTTON_PORT;
 }
+
+void put_key_fifo()
+
+void button_scan(void)
+{
+
+}

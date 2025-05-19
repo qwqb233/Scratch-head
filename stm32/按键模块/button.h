@@ -12,10 +12,15 @@
 
 typedef enum
 {
-    button_pressed,
-    button_released,
-    button_hold,
-    button_none
+    start_button_none = 0,
+    start_button_pressed,
+    start_button_released,
+    start_button_hold,
+
+    test_button_pressed,
+    test_button_released,
+    test_button_hold
+    
 }button_state_t;
 
 typedef struct button
