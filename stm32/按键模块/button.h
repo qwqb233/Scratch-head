@@ -55,12 +55,12 @@ typedef struct button_fifo
 #define BUTTON_COUNT (uint8_t)((button_max-1)/3)
 
 
-button_struct_t button_list[BUTTON_COUNT];
-button_fifo_t button_fifo;
+extern button_struct_t button_list[BUTTON_COUNT];
+extern button_fifo_t button_fifo;
 
 void button_init(void);
 void button_scan(void);
-
+uint8_t button_fifo_read(void);
 //放置在滴答定时器或一毫秒定时器中
 void button_scan_1ms(void);
 void button_scan_10ms(void);

@@ -5,8 +5,12 @@
  * @FilePath: \Scratch-head-1\stm32\按键模块\button.c
  * @Description: 
  */
+#include "main.h"
+
 #include "button.h"
-#include <cstddef>
+
+button_struct_t button_list[BUTTON_COUNT];
+button_fifo_t button_fifo;
 
 // #define BUTTON_HARD_INIT //需要硬件初始化
 
@@ -52,8 +56,8 @@ static inline void button_struct_init(button_struct_t *button)
     button->port = NULL;
     button->pin = 0;
     button->active_level = 0;
-    button->state = button->active_level == 0 ? 1 : 0;
-    button->last_state = button->active_level == 0 ? 1 : 0;
+    button->state = 0;
+    button->last_state = 0;
     button->hold_time = 0;
     button->count_hold_time = 0;
     button->filter_time = 50;
@@ -83,21 +87,30 @@ void button_init(void)
         button_struct_init(&button_list[i]);
     }
     #endif
+
     button_fifo.read = button_fifo.fifo;
     button_fifo.write = button_fifo.fifo;
+
+    button_list[0].port = Start_button_GPIO_Port;
+    button_list[0].pin = Start_button_Pin;
+    button_list[0].hold_time = 10;
+
+    button_list[1].port = Select_button_GPIO_Port;
+    button_list[1].pin = Select_button_Pin;
+    button_list[1].hold_time = 10;
 }
 
 void button_scan(void)
 {
     for(int i = 0;i < BUTTON_COUNT;i++)
     {
-        if(isKeyPressed(&button_list[i]))
+        if(isKeyPressed(&button_list[i]) == 1)
         {
             if(button_list[i].state == 0)
             {
                 button_list[i].last_state = button_list[i].state;
-                button_list[i].state = 1;
                 button_list[i].count_hold_time = 0;
+                button_list[i].state = 1;
                 button_list[i].count_repeat_time = 0;
                 button_list[i].count_filter_time = 0;
             }
@@ -106,22 +119,21 @@ void button_scan(void)
                 button_list[i].count_filter_time++;
                 if(button_list[i].count_filter_time >= button_list[i].filter_time)
                 {
-                    if(button_list[i].count_hold_time == 0) put_fifo(i*3+1);//按键按下
-                    
+                    if(button_list[i].count_hold_time == 0) {put_fifo(i*3+1);}//按键按下
                     button_list[i].count_filter_time = 0;
                     button_list[i].count_hold_time++;
                     
-                    if(button_list[i].count_hold_time == button_list[i].hold_time)
+                    if(button_list[i].count_hold_time == button_list[i].hold_time && button_list[i].hold_time != 0)
                     {
                         put_fifo(i*3+1+1);//长按
                     }
-                    else if(button_list[i].repeat_time > 0 && button_list[i].count_hold_time > button_list[i].hold_time)
+                    else if(button_list[i].repeat_time > 0 && button_list[i].count_hold_time > button_list[i].hold_time && button_list[i].hold_time != 0)
                     {
-                        put_fifo(i*3+1+1);//按键按下
+                        put_fifo(i*3+1);//按键按下
                         button_list[i].count_repeat_time++;
                     }
                 }
-                if(button_list[i].count_repeat_time >= button_list[i].repeat_time)
+                if(button_list[i].count_repeat_time >= button_list[i].repeat_time && button_list[i].repeat_time != 0)
                 {
                     put_fifo(i*3+1+1);//重复按下
                 }
@@ -129,7 +141,8 @@ void button_scan(void)
         }
         else
         {
-            if(button_list[i].state == 1)
+            button_list[i].count_filter_time++;
+            if(button_list[i].state == 1 && button_list[i].count_filter_time >= button_list[i].filter_time)
             {
                 button_list[i].last_state = button_list[i].state;
                 button_list[i].state = 0;
@@ -157,4 +170,21 @@ void button_scan_10ms(void)
         button_scan();
         count = 0;
     }
+}
+
+uint8_t button_fifo_read(void)
+{
+    if(button_fifo.read == button_fifo.write)
+    {
+        return 0xff;
+    }
+    uint8_t data = *button_fifo.read;
+    uint8_t buffer[100];
+    button_fifo.read++;
+    if(button_fifo.read >= button_fifo.fifo + BUTTON_FIFO_SIZE)
+    {
+        button_fifo.read = button_fifo.fifo;
+    }
+    return data;
+    //处理数据
 }
