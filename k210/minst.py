@@ -1,3 +1,11 @@
+"""
+波特率：115200
+数据包：
+实验例程  	  开始符	 例程编号	数据量	数字ID	分隔符	结束符	 备注				
+数字分类（0-9） 	$	   11	     01      XXX      ,	      #	     ID:是指识别出来的数字ID（0-9）				
+									
+
+"""
 import sensor, image, time, lcd
 from maix import KPU
 import gc
