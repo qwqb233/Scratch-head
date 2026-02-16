@@ -1,0 +1,3 @@
+[submodule "mspm/driver"]
+	path = mspm/driver
+	url = git@github.com:Torris-Yin/mspm0-modules.git
