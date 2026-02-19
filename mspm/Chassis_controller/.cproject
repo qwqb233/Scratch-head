@@ -43,6 +43,9 @@
                                     <listOptionValue value="D:/eleH/Scratch-head/mspm/Chassis_controller/Drivers/MPU6050"/>
                                     <listOptionValue value="D:/eleH/Scratch-head/mspm/Chassis_controller/Drivers/OLED_Hardware_I2C"/>
                                     <listOptionValue value="D:/eleH/Scratch-head/mspm/Chassis_controller/Drivers/BNO08X_UART_RVC"/>
+                                    <listOptionValue value="D:/eleH/Scratch-head/mspm/Chassis_controller/Tools"/>
+                                    <listOptionValue value="D:/eleH/Scratch-head/mspm/Chassis_controller/Drivers/UART"/>
+                                    <listOptionValue value="D:/eleH/Scratch-head/mspm/Chassis_controller/Drivers/PWM"/>
                                     <listOptionValue value="D:/eleH/Scratch-head/mspm/Chassis_controller/Drivers/WIT"/>
                                     <listOptionValue value="${COM_TI_MSPM0_SDK_INSTALL_DIR}/source/third_party/CMSIS/Core/Include"/>
                                     <listOptionValue value="${COM_TI_MSPM0_SDK_INSTALL_DIR}/source/third_party/CMSIS/DSP/Include"/>
