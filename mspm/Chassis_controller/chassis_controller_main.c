@@ -5,6 +5,7 @@
 // -----------------------INCLUDE----------------------- //
 #include "arm_math.h"
 #include "ti_msp_dl_config.h"
+#include "oled_hardware_i2c.h"
 
 // -----------------------LOCAL FUNC----------------------- //
 
