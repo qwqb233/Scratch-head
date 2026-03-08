@@ -12,7 +12,7 @@ typedef struct
     float target;
 }pid_controller_t;
 
-pid_controller_t PID_struct_init(pid_controller_t pid_controller);
-pid_controller_t PID_output_calculate(pid_controller_t input);
+void PID_struct_init(pid_controller_t* pid_controller);
+void PID_output_calculate(pid_controller_t* input);
 
 #endif /*__PID_CONTROLLER_H*/

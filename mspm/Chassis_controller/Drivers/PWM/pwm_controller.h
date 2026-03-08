@@ -1,3 +1,10 @@
+/*
+ * @Author: qwqb233 qwqb.zhang@gmail.com
+ * @Date: 2026-02-19 21:12:58
+ * @LastEditors: qwqb233 qwqb.zhang@gmail.com
+ * @FilePath: \Scratch-head\mspm\Chassis_controller\Drivers\PWM\pwm_controller.h
+ * @Description: 
+ */
 #ifndef __PWM_CONTROLLER_H
 #define __PWM_CONTROLLER_H
 
@@ -16,7 +23,5 @@ typedef struct
 
 void PWM_init(pwm_controller_t* pwm, int* timer, int index, int arr);
 void PWM_setDuty(pwm_controller_t* pwm, int duty);
-
-
 
 #endif /*__PWM_CONTROLLER_H*/
