@@ -46,6 +46,3 @@ git clone git@github.com:Torris-Yin/mspm0-modules.git
 # enter the directory
 git submodule update --init --recursive
 ```
-
-
----
